@@ -61,6 +61,9 @@ public class OracleSourceTask extends SourceTask {
   private static Connection dbConn;  
   String logMinerOptions=OracleConnectorSQL.LOGMINER_START_OPTIONS;
   String logMinerStartScr=OracleConnectorSQL.START_LOGMINER_CMD;
+  String logMinerSetLog1Scr=OracleConnectorSQL.SET_LOGFILE9i_1;
+  String logMinerSetLog2Scr=OracleConnectorSQL.SET_LOGFILE9i_2;
+  String logMinerSetLog3Scr=OracleConnectorSQL.SET_LOGFILE9i_3;
   CallableStatement logMinerStartStmt=null;
   CallableStatement logMinerStopStmt = null;
   String logMinerSelectSql;
@@ -104,6 +107,14 @@ public class OracleSourceTask extends SourceTask {
       logMinerSelectSql = utils.getLogMinerSelectSql();
 
       log.info("Starting LogMiner Session");
+
+      logMinerSetLog1Stmt=dbConn.prepareCall(logMinerSetLog1Scr);
+      logMinerSetLog2Stmt=dbConn.prepareCall(logMinerSetLog2Scr);
+      logMinerSetLog3Stmt=dbConn.prepareCall(logMinerSetLog3Scr);
+      logMinerSetLog3Stmt.execute();
+      logMinerSetLog3Stmt.execute();
+      logMinerSetLog3Stmt.execute();
+
       logMinerStartScr=logMinerStartScr+logMinerOptions+") \n; end;";
       logMinerStartStmt=dbConn.prepareCall(logMinerStartScr);
       Map<String,Object> offset = context.offsetStorageReader().offset(Collections.singletonMap(LOG_MINER_OFFSET_FIELD, dbName));
