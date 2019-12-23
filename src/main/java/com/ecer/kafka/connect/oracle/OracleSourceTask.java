@@ -127,14 +127,12 @@ public class OracleSourceTask extends SourceTask {
       streamOffsetCommitScn=0L;
       streamOffsetRowId="";
       if (offset!=null){
-	log.info("entra a offset!=null ");
         Object lastRecordedOffset = offset.get(POSITION_FIELD);
         Object commitScnPositionObject = offset.get(COMMITSCN_POSITION_FIELD);
         Object rowIdPositionObject = offset.get(ROWID_POSITION_FIELD);        
         streamOffsetScn = (lastRecordedOffset != null) ? Long.parseLong(String.valueOf(lastRecordedOffset)) : 0L;
         streamOffsetCommitScn = (commitScnPositionObject != null) ? Long.parseLong(String.valueOf(commitScnPositionObject)) : 0L;
-        streamOffsetRowId = (rowIdPositionObject != null) ? (String) offset.get(ROWID_POSITION_FIELD) : ""; 
-	      
+        streamOffsetRowId = (rowIdPositionObject != null) ? (String) offset.get(ROWID_POSITION_FIELD) : "";
       }      
 
       if (streamOffsetScn!=0L){
