@@ -66,6 +66,11 @@ public class OracleSourceTask extends SourceTask {
   String logMinerSetLog3Scr=OracleConnectorSQL.SET_LOGFILE9i_3;
   CallableStatement logMinerStartStmt=null;
   CallableStatement logMinerStopStmt = null;
+	
+  CallableStatement logMinerSetLog1Stmt = null;
+  CallableStatement logMinerSetLog2Stmt = null;
+  CallableStatement logMinerSetLog3Stmt = null;
+	
   String logMinerSelectSql;
   static PreparedStatement logMinerSelect;
   PreparedStatement currentSCNStmt;
@@ -111,8 +116,8 @@ public class OracleSourceTask extends SourceTask {
       logMinerSetLog1Stmt=dbConn.prepareCall(logMinerSetLog1Scr);
       logMinerSetLog2Stmt=dbConn.prepareCall(logMinerSetLog2Scr);
       logMinerSetLog3Stmt=dbConn.prepareCall(logMinerSetLog3Scr);
-      logMinerSetLog3Stmt.execute();
-      logMinerSetLog3Stmt.execute();
+      logMinerSetLog1Stmt.execute();
+      logMinerSetLog2Stmt.execute();
       logMinerSetLog3Stmt.execute();
 
       logMinerStartScr=logMinerStartScr+logMinerOptions+") \n; end;";
