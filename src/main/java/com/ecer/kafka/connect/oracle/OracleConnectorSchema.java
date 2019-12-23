@@ -18,7 +18,7 @@ public class OracleConnectorSchema{
     public static final String COMMIT_SCN_FIELD ="COMMIT_SCN";
     public static final String OWNER_FIELD ="OWNER";
     public static final String SEG_OWNER_FIELD ="SEG_OWNER";
-    public static final String TABLE_NAME_FIELD ="TABLE_NAME";
+    public static final String TABLE_NAME_FIELD ="SEG_NAME";
     public static final String TIMESTAMP_FIELD ="TIMESTAMP";
     public static final String SQL_REDO_FIELD ="SQL_REDO";
     public static final String OPERATION_FIELD ="OPERATION";
