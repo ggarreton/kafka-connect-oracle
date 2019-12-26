@@ -310,7 +310,7 @@ public class OracleSourceConnectorUtils{
       if (config.getParseDmlData()){
         if (!tableSchema.containsKey(owner+DOT+tableName)){        
           if (!tableName.matches("^[\\w.-]+$")){
-            throw new ConnectException("Invalid table name "+tableName+" for kafka topic.Check table name which must consist only a-z, A-Z, '0-9', ., - and _");
+            throw new ConnectException("Invalid table name "+tableName+" for kafka topic.Check table name which must consist only a-z, A-Z, '0-9', ., - and _   DEBUG: OWNER="+owner+" sqlRedo="+sqlRedo+"operation="+operation);
           }
           loadTable(owner, tableName,operation);
         }
