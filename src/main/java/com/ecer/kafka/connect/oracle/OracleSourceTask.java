@@ -19,12 +19,7 @@ import static com.ecer.kafka.connect.oracle.OracleConnectorSchema.TEMPORARY_TABL
 import static com.ecer.kafka.connect.oracle.OracleConnectorSchema.TIMESTAMP_FIELD;
 
 import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -183,6 +178,7 @@ public class OracleSourceTask extends SourceTask {
       logMinerStartStmt.setLong(1, streamOffsetScn);
       logMinerStartStmt.execute();      
       logMinerSelect=dbConn.prepareCall(logMinerSelectSql);
+      log.info(logMinerSelectSql);
       logMinerSelect.setFetchSize(config.getDbFetchSize());
       logMinerSelect.setLong(1, streamOffsetCommitScn);
       logMinerData=logMinerSelect.executeQuery();
@@ -202,6 +198,14 @@ public class OracleSourceTask extends SourceTask {
     	  if (log.isDebugEnabled()) {
     		  logRawMinerData();
     	  }
+        ResultSetMetaData rsmd = logMinerData.getMetaData();
+        int columnsNumber = rsmd.getColumnCount();
+        for (int i = 1; i <= columnsNumber; i++) {
+          if (i > 1) System.out.print(",  ");
+          String columnValue = logMinerData.getString(i);
+          System.out.print(columnValue + " " + rsmd.getColumnName(i));
+        }
+
         Long scn=logMinerData.getLong(SCN_FIELD);
         Long commitScn=logMinerData.getLong(COMMIT_SCN_FIELD);
         String rowId=logMinerData.getString(ROW_ID_FIELD);
