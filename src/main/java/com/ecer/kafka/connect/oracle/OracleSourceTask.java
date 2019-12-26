@@ -182,13 +182,14 @@ public class OracleSourceTask extends SourceTask {
       logMinerSelect.setFetchSize(config.getDbFetchSize());
       logMinerSelect.setLong(1, streamOffsetCommitScn);
       logMinerData=logMinerSelect.executeQuery();
-      ResultSetMetaData rsmd = logMinerData.getMetaData();
+      log.info(String.valueOf(logMinerSelect));
+      /*ResultSetMetaData rsmd = logMinerData.getMetaData();
       int columnsNumber = rsmd.getColumnCount();
       for (int i = 1; i <= columnsNumber; i++) {
         if (i > 1) System.out.print(",  ");
         String columnValue = logMinerData.getString(i);
         System.out.print(columnValue + " " + rsmd.getColumnName(i));
-      }
+      }*/
       log.info("Logminer started successfully");
     }catch(SQLException e){
       throw new ConnectException("Error at database tier, Please check : "+e.toString());
