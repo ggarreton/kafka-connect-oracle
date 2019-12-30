@@ -108,7 +108,8 @@ public class OracleSourceConnectorUtils{
 
     protected String getDbVersion() throws SQLException{
       String dbVersion ="0";
-      PreparedStatement dbVersionPs = dbConn.prepareCall(OracleConnectorSQL.DB_VERSION);
+      //PreparedStatement dbVersionPs = dbConn.prepareCall(OracleConnectorSQL.DB_VERSION);
+      PreparedStatement dbVersionPs = dbConn.prepareCall("select version from v$instance");
       ResultSet dbVersionRs = dbVersionPs.executeQuery();
       while (dbVersionRs.next()){
         dbVersion = dbVersionRs.getString("VERSION");
