@@ -15,7 +15,7 @@ public class OracleConnectorSchema{
 
     public static final String DML_ROW_SCHEMA_NAME ="DML_ROW";
     public static final String SCN_FIELD ="SCN";
-    public static final String COMMIT_SCN_FIELD ="COMMIT_SCN";
+    public static final String COMMIT_SCN_FIELD ="CSCN";
     public static final String OWNER_FIELD ="OWNER";
     public static final String SEG_OWNER_FIELD ="SEG_OWNER";
     public static final String TABLE_NAME_FIELD ="SEG_NAME";
