@@ -226,6 +226,7 @@ public class OracleSourceTask extends SourceTask {
         String segOwner = logMinerData.getString(SEG_OWNER_FIELD); 
         String segName = logMinerData.getString(TABLE_NAME_FIELD);
         String sqlRedo = logMinerData.getString(SQL_REDO_FIELD);
+	log.info("segname es:"+segName+"    TABLE_NAME_FIELD es   "+TABLE_NAME_FIELD);
         if (sqlRedo.contains(TEMPORARY_TABLE)) continue;
 
         while(contSF){
