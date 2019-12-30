@@ -205,11 +205,15 @@ public class OracleSourceTask extends SourceTask {
           String columnValue = logMinerData.getString(i);
           System.out.print(columnValue + " " + rsmd.getColumnName(i));
         }
-
+	log.info("todo OK 1");
         Long scn=logMinerData.getLong(SCN_FIELD);
+	log.info("todo OK 2");
         Long commitScn=logMinerData.getLong(COMMIT_SCN_FIELD);
+	log.info("todo OK 3");
         String rowId=logMinerData.getString(ROW_ID_FIELD);
+	log.info("todo OK 4");
         boolean contSF = logMinerData.getBoolean(CSF_FIELD);
+	log.info("todo OK 5");
         if (skipRecord){
           if ((scn.equals(streamOffsetCtrl))&&(commitScn.equals(streamOffsetCommitScn))&&(rowId.equals(streamOffsetRowId))&&(!contSF)){
             skipRecord=false;
