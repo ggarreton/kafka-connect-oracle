@@ -198,22 +198,15 @@ public class OracleSourceTask extends SourceTask {
     	  if (log.isDebugEnabled()) {
     		  logRawMinerData();
     	  }
-        ResultSetMetaData rsmd = logMinerData.getMetaData();
-        int columnsNumber = rsmd.getColumnCount();
-        for (int i = 1; i <= columnsNumber; i++) {
-          if (i > 1) System.out.print(",  ");
-          String columnValue = logMinerData.getString(i);
-          System.out.print(columnValue + " " + rsmd.getColumnName(i));
-        }
 	log.info("todo OK 1");
         Long scn=logMinerData.getLong(SCN_FIELD);
-	log.info("todo OK 2");
+	log.info("todo OK 2 "+scn);
         Long commitScn=logMinerData.getLong(COMMIT_SCN_FIELD);
-	log.info("todo OK 3");
+	log.info("todo OK 3 "+commitScn);
         String rowId=logMinerData.getString(ROW_ID_FIELD);
-	log.info("todo OK 4");
+	log.info("todo OK 4 "+rowId);
         boolean contSF = logMinerData.getBoolean(CSF_FIELD);
-	log.info("todo OK 5");
+	log.info("todo OK 5 "+contSF);
         if (skipRecord){
           if ((scn.equals(streamOffsetCtrl))&&(commitScn.equals(streamOffsetCommitScn))&&(rowId.equals(streamOffsetRowId))&&(!contSF)){
             skipRecord=false;
