@@ -112,6 +112,7 @@ public class OracleSourceConnectorUtils{
       ResultSet dbVersionRs = dbVersionPs.executeQuery();
       while (dbVersionRs.next()){
         dbVersion = dbVersionRs.getString("VERSION");
+        log.info("version de db = "+dbVersion);
       }
       dbVersionRs.close();
       dbVersionPs.close();
