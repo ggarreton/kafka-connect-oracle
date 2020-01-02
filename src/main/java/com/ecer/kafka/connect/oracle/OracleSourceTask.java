@@ -178,11 +178,10 @@ public class OracleSourceTask extends SourceTask {
       logMinerStartStmt.setLong(1, streamOffsetScn);
       logMinerStartStmt.execute();      
       logMinerSelect=dbConn.prepareCall(logMinerSelectSql);
-      log.info(logMinerSelectSql);
       logMinerSelect.setFetchSize(config.getDbFetchSize());
       logMinerSelect.setLong(1, streamOffsetCommitScn);
       logMinerData=logMinerSelect.executeQuery();
-      log.info("Logminer started successfully at scn "+streamOffsetCommitScn);
+      log.info("Logminer started successfully");
     }catch(SQLException e){
       throw new ConnectException("Error at database tier, Please check : "+e.toString());
     }
@@ -200,13 +199,9 @@ public class OracleSourceTask extends SourceTask {
     	  }
 	log.info("todo OK 1");
         Long scn=logMinerData.getLong(SCN_FIELD);
-	log.info("todo OK 2 "+scn);
         Long commitScn=logMinerData.getLong(COMMIT_SCN_FIELD);
-	log.info("todo OK 3 "+commitScn);
         String rowId=logMinerData.getString(ROW_ID_FIELD);
-	log.info("todo OK 4 "+rowId);
         boolean contSF = logMinerData.getBoolean(CSF_FIELD);
-	log.info("todo OK 5 "+contSF);
         if (skipRecord){
           if ((scn.equals(streamOffsetCtrl))&&(commitScn.equals(streamOffsetCommitScn))&&(rowId.equals(streamOffsetRowId))&&(!contSF)){
             skipRecord=false;
@@ -223,7 +218,6 @@ public class OracleSourceTask extends SourceTask {
         String segOwner = logMinerData.getString(SEG_OWNER_FIELD); 
         String segName = logMinerData.getString(TABLE_NAME_FIELD);
         String sqlRedo = logMinerData.getString(SQL_REDO_FIELD);
-	log.info("segname es:"+segName+"    TABLE_NAME_FIELD es   "+TABLE_NAME_FIELD);
         if (sqlRedo.contains(TEMPORARY_TABLE)) continue;
 
         while(contSF){
@@ -236,8 +230,7 @@ public class OracleSourceTask extends SourceTask {
         String operation = logMinerData.getString(OPERATION_FIELD);
         Data row = new Data(scn, segOwner, segName, sqlRedo,timeStamp,operation);
         topic = config.getTopic().equals("") ? (config.getDbNameAlias()+DOT+row.getSegOwner()+DOT+row.getSegName()).toUpperCase() : topic;
-        log.info(String.valueOf(logMinerData.getMetaData()));
-        log.info(String.format("Fetched %s rows from database %s ",ix,config.getDbNameAlias())+" "+row.getTimeStamp()+" "+row.getSegName()+" "+row.getScn()+" "+commitScn);
+        //log.info(String.format("Fetched %s rows from database %s ",ix,config.getDbNameAlias())+" "+row.getTimeStamp()+" "+row.getSegName()+" "+row.getScn()+" "+commitScn);
         if (ix % 100 == 0) log.info(String.format("Fetched %s rows from database %s ",ix,config.getDbNameAlias())+" "+row.getTimeStamp());
         dataSchemaStruct = utils.createDataSchema(segOwner, segName, sqlRedo,operation);        
         records.add(new SourceRecord(sourcePartition(), sourceOffset(scn,commitScn,rowId), topic,  dataSchemaStruct.getDmlRowSchema(), setValueV2(row,dataSchemaStruct)));                          
