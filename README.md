@@ -83,13 +83,13 @@ On database server
 Enable supplemental logging
 
     sqlplus / as sysdba    
-    SQL>alter database add supplemental log data (all) columns;
+    SQL>alter database add supplemental log data;
 
 In order to execute connector successfully, connector must be started with privileged Oracle user.If given user has DBA role , this step can be skipped else following scripts will be executed to create privileged user.
 
     create role logmnr_role;
     grant create session to logmnr_role;
-    grant  execute_catalog_role,select any transaction ,select any dictionary to logmnr_role;
+    grant  execute_catalog_role,execute on dbms_flashback ,select any dictionary to logmnr_role;
     create user kminer identified by kminerpass;
     grant  logmnr_role to kminer;
     alter user kminer quota unlimited on users;
@@ -151,7 +151,7 @@ In a multitenant configuration, the privileged Oracle user must be a "common use
 
     mvn clean package
 
-    Copy kafka-connect-oracle-1.0.jar and lib/ojdbc7.jar to KAFKA_HOME/lib folder. If CONFLUENT platform is using for kafka cluster , copy ojdbc7.jar and  kafka-connect-oracle-1.0.jar to $CONFLUENT_HOME/share/java/kafka-connect-jdbc folder.
+    Copy kafka-connect-oracle-1.0.jar and lib/ojdbc6_g.jar to $KAFKA_HOME/lib folder. If CONFLUENT platform is using for kafka cluster , copy ojdbc6_g.jar and  kafka-connect-oracle-1.0.jar to $CONFLUENT_HOME/share/java/kafka-connect-jdbc folder.
 
     Copy config/OracleSourceConnector.properties file to $KAFKA_HOME/config . For CONFLUENT copy properties file to $CONFLUENT_HOME/etc/kafka-connect-jdbc
 
@@ -168,11 +168,5 @@ In a multitenant configuration, the privileged Oracle user must be a "common use
 
     Do not forget to populate connect-standalone.properties  or connect-avro-standalone.properties with the appropriate hostnames and ports.
 
-# Todo:
-
-    1.Implementation for DDL operations
-    2.Support for other Oracle specific data types
-    3.New implementations
-    4.Performance Tuning
-    5.Initial data load
-    6.Bug fix    
+## Source
+    Original conector: https://github.com/erdemcer/kafka-connect-oracle
