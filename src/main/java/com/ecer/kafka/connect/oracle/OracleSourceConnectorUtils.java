@@ -108,12 +108,10 @@ public class OracleSourceConnectorUtils{
 
     protected String getDbVersion() throws SQLException{
       String dbVersion ="0";
-      //PreparedStatement dbVersionPs = dbConn.prepareCall(OracleConnectorSQL.DB_VERSION);
-      PreparedStatement dbVersionPs = dbConn.prepareCall("select version from v$instance");
-      ResultSet dbVersionRs = dbVersionPs.executeQuery("select version from v$instance");
+      PreparedStatement dbVersionPs = dbConn.prepareCall(OracleConnectorSQL.DB_VERSION);
+      ResultSet dbVersionRs = dbVersionPs.executeQuery();
       while (dbVersionRs.next()){
         dbVersion = dbVersionRs.getString("VERSION");
-        log.info("version de db = "+dbVersion);
       }
       dbVersionRs.close();
       dbVersionPs.close();
@@ -312,7 +310,7 @@ public class OracleSourceConnectorUtils{
       if (config.getParseDmlData()){
         if (!tableSchema.containsKey(owner+DOT+tableName)){        
           if (!tableName.matches("^[\\w.-]+$")){
-            throw new ConnectException("Invalid table name "+tableName+" for kafka topic.Check table name which must consist only a-z, A-Z, '0-9', ., - and _   DEBUG: OWNER="+owner+" sqlRedo="+sqlRedo+"operation="+operation);
+            throw new ConnectException("Invalid table name "+tableName+" for kafka topic.Check table name which must consist only a-z, A-Z, '0-9', ., - and _");
           }
           loadTable(owner, tableName,operation);
         }
