@@ -197,7 +197,6 @@ public class OracleSourceTask extends SourceTask {
     	  if (log.isDebugEnabled()) {
     		  logRawMinerData();
     	  }
-	log.info("todo OK 1");
         Long scn=logMinerData.getLong(SCN_FIELD);
         Long commitScn=logMinerData.getLong(COMMIT_SCN_FIELD);
         String rowId=logMinerData.getString(ROW_ID_FIELD);
